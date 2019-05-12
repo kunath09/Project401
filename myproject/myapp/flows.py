@@ -17,9 +17,9 @@ class BuyMetFlow(Flow):
         flow.Start(
             views.StartView,
             # CreateProcessView,
-            fields=["material","text","num"]
+            # fields=["material","text","num"]
         ).Permission(
-            'user.can_start_request'
+            auto_create=True
         ).Next(this.manager_approve_order)
     )
 

@@ -1,15 +1,105 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import generic
 # from material import Layout, Fieldset, Row, Span2, Span5, Span7
 from viewflow.flow.views import StartFlowMixin, FlowViewMixin,FlowMixin
 
-from .forms import CreatOrderForm
+from .forms import MaterialForm
 from .models import Material,BuyMetProcess
+from django.contrib.auth.decorators import login_required
+
+from social_django.models import UserSocialAuth
+from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+
+@login_required
+def home(request):
+    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/home.html')
+
+@login_required
+def settings(request):
+    user = request.user
+
+    try:
+        github_login = user.social_auth.get(provider='github')
+    except UserSocialAuth.DoesNotExist:
+        github_login = None
+
+    try:
+        twitter_login = user.social_auth.get(provider='twitter')
+    except UserSocialAuth.DoesNotExist:
+        twitter_login = None
+
+    try:
+        facebook_login = user.social_auth.get(provider='facebook')
+    except UserSocialAuth.DoesNotExist:
+        facebook_login = None
+
+    can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
+
+    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/settings.html', {
+        'github_login': github_login,
+        'twitter_login': twitter_login,
+        'facebook_login': facebook_login,
+        'can_disconnect': can_disconnect
+    })
+
+@login_required
+def password(request):
+    if request.user.has_usable_password():
+        PasswordForm = PasswordChangeForm
+    else:
+        PasswordForm = AdminPasswordChangeForm
+
+    if request.method == 'POST':
+        form = PasswordForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordForm(request.user)
+    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/password.html', {'form': form})
+###############################
+    
+# def login(request):
+#     return render(request, 'templates/login.html')
+    
+# def logout(request):
+#     return render(request, 'templates/logout.html')
+
+# class StartView(StartFlowMixin, generic.UpdateView):
+#     form_class = CreatOrderForm
+#     # model = BuyMetProcess
+#     # fields = ['fields','form_class']
+
+#     def get_object(self):
+#         return self.activation.process.material
+
+#     def activation_done(self, form):
+#         material = form.save()
+#         self.activation.process.material = material
+#         super(StartView, self).activation_done(form)
+
+# def InputMaterial():
+#     area =[""]
 
 class StartView(StartFlowMixin, generic.UpdateView):
-    form_class = CreatOrderForm
-    # model = BuyMetProcess
-    # fields = ['fields','form_class']
+    form_class = MaterialForm
+
+    # layout = Layout(
+    #     Row('shipment_no'),
+    #     Fieldset('Customer Details',
+    #              Row('first_name', 'last_name', 'email'),
+    #              Row('phone')),
+    #     Fieldset('Address',
+    #              Row(Span7('address'), Span5('zipcode')),
+    #              Row(Span5('city'), Span2('state'), Span5('country'))),
+    #     'items',
+    # )
 
     def get_object(self):
         return self.activation.process.material
@@ -18,9 +108,5 @@ class StartView(StartFlowMixin, generic.UpdateView):
         material = form.save()
         self.activation.process.material = material
         super(StartView, self).activation_done(form)
-
-# def InputMaterial():
-#     area =[""]
-
     
     

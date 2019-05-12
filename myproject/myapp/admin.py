@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from .models import User,Material,Menu,Supplier,BuyMetProcess
+from .models import User,Material,Menu,Supplier,BuyMetProcess,MaterialItem
 from viewflow.admin import ProcessAdmin
 from . import models
 
@@ -25,6 +25,12 @@ class SupplierAdmin(admin.ModelAdmin):
     fields = ('material', 'name', 'location', 'telephone')
 
 admin.site.register(Supplier, SupplierAdmin)
+
+class MaterialItemAdmin(admin.ModelAdmin):
+    # list_display  = [f.name for f in Supplier._meta.fields]
+    fields = ('material', 'name', 'quantity')
+
+admin.site.register(MaterialItem, MaterialItemAdmin)
 
 class BuyMetProcessAdmin(ProcessAdmin):
     icon = '<i class="material-icons">flag</i>'

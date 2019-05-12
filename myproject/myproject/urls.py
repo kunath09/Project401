@@ -20,15 +20,29 @@ from django.views import generic
 from material.frontend import urls as frontend_urls
 
 
-from api.views import UserViewSet
+from api.views import UserViewSet,MaterialViewSet,MenuViewSet,SupplierViewSet
 from rest_framework.routers import DefaultRouter
+
+from django.contrib.auth import views as auth_views
+
+from myapp import views as core_views
 
 router = DefaultRouter()
 router.register('User', UserViewSet)
+router.register('Material', MaterialViewSet)
+router.register('Menu', MenuViewSet)
+router.register('Supplier', SupplierViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/',generic.RedirectView.as_view(url='/workflow/',permanent=False)),
     path('',include(frontend_urls)),
     path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('oauth/', include('social_django.urls', namespace='social')),
+    path('login/', auth_views.LoginView.as_view(),{'template_name': 'myapp/templates/registration/login.html'}, name='login'),
+    path('logout/', auth_views.LogoutView.as_view(),{'template_name': 'myapp/templates/registration/logout.html'}, name='logout'),
+    path('home/', core_views.home, name='home'),
+    path('settings/', core_views.settings, name='settings'),
+    path('settings/password/', core_views.password, name='password'),
 ]
