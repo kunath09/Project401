@@ -5,23 +5,33 @@ from viewflow.lock import select_for_update_lock
 
 
 from . import models, views
-from .models import BuyMetProcess
+from .models import BuyMaterialProcess
 from viewflow import frontend
 
 @frontend.register
 class BuyMetFlow(Flow):
-    process_class = BuyMetProcess
+    process_class = BuyMaterialProcess
     lock_impl = select_for_update_lock
 
     chef_start_order = (
         flow.Start(
             views.StartView,
             # CreateProcessView,
-            # fields=["material","text","num"]
+            # fields=["text","num"]
         ).Permission(
             auto_create=True
         ).Next(this.manager_approve_order)
     )
+
+    # chef_Input_order = (
+    #     flow.View(
+    #         views.OrderView,
+    #         # CreateProcessView,
+    #         # fields=["material","text","num"]
+    #     ).Permission(
+    #         auto_create=True
+    #     ).Next(this.manager_approve_order)
+    # )
 
     manager_approve_order = (
         flow.View(
@@ -39,7 +49,9 @@ class BuyMetFlow(Flow):
 
     chef_fix_order = (
         flow.View(
-            UpdateProcessView,fields=["material","text"]
+            # UpdateProcessView,fields=["material","text"]
+            # views.FixView,fields=["material","quantity"]
+            views.FixView,
         ).Permission(
             auto_create=True
         ).Next(this.manager_approve_order)
@@ -61,7 +73,7 @@ class BuyMetFlow(Flow):
 
     sup_deliverly = (
         flow.View(
-            UpdateProcessView,fields=["num"]
+            views.DateView,fields=["datesent"]
         ).Permission(
             auto_create=True
         ).Next(this.manager_check_deliverly)

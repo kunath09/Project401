@@ -3,8 +3,8 @@ from django.views import generic
 # from material import Layout, Fieldset, Row, Span2, Span5, Span7
 from viewflow.flow.views import StartFlowMixin, FlowViewMixin,FlowMixin
 
-from .forms import MaterialForm
-from .models import Material,BuyMetProcess
+from .forms import MaterialForm,RestaurantForm
+from .models import Material,BuyMaterialProcess
 from django.contrib.auth.decorators import login_required
 
 from social_django.models import UserSocialAuth
@@ -88,18 +88,8 @@ def password(request):
 #     area =[""]
 
 class StartView(StartFlowMixin, generic.UpdateView):
+    # form_class = RestaurantForm
     form_class = MaterialForm
-
-    # layout = Layout(
-    #     Row('shipment_no'),
-    #     Fieldset('Customer Details',
-    #              Row('first_name', 'last_name', 'email'),
-    #              Row('phone')),
-    #     Fieldset('Address',
-    #              Row(Span7('address'), Span5('zipcode')),
-    #              Row(Span5('city'), Span2('state'), Span5('country'))),
-    #     'items',
-    # )
 
     def get_object(self):
         return self.activation.process.material
@@ -108,5 +98,30 @@ class StartView(StartFlowMixin, generic.UpdateView):
         material = form.save()
         self.activation.process.material = material
         super(StartView, self).activation_done(form)
+
+# class OrderView(StartFlowMixin, generic.UpdateView):
+#     form_class = MaterialForm
+
+#     def get_object(self):
+#         return self.activation.process.material
+
+#     def activation_done(self, form):
+#         material = form.save()
+#         self.activation.process.material = material
+#         super(OrderView, self).activation_done(form)
     
+class FixView(FlowMixin, generic.UpdateView):
+    form_class = MaterialForm
+
+    def get_object(self):
+        return self.activation.process.material
+
+    def activation_done(self, form):
+        material = form.save()
+        self.activation.process.material = material
+        super(FixView, self).activation_done(form)
+
+class DateView(FlowMixin, generic.UpdateView):
     
+    def get_object(self):
+        return self.activation.process.material

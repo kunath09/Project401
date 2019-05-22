@@ -1,21 +1,21 @@
 from rest_framework import serializers
-from myapp.models import User,Material,Menu,Supplier
-class UserSerializer(serializers.ModelSerializer):
+from myapp.models import Profile,Material,Menu
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('name', 'table_no', 'role')
+        model = Profile
+        fields = ('user', 'restaurant', 'role','phone')
 
 class MaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Material
-        fields = ('user', 'name', 'quantity')
+        fields = ('user', 'quantity')
 
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
-        fields = ('user', 'name', 'description','price','image')
+        fields = ('restaurant', 'name', 'description','price','image')
 
-class SupplierSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Supplier
-        fields = ('material', 'name', 'location','telephone')
+# class SupplierSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Supplier
+#         fields = ('material', 'name', 'location','telephone')

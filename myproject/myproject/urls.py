@@ -20,7 +20,7 @@ from django.views import generic
 from material.frontend import urls as frontend_urls
 
 
-from api.views import UserViewSet,MaterialViewSet,MenuViewSet,SupplierViewSet
+from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet
 from rest_framework.routers import DefaultRouter
 
 from django.contrib.auth import views as auth_views
@@ -28,10 +28,9 @@ from django.contrib.auth import views as auth_views
 from myapp import views as core_views
 
 router = DefaultRouter()
-router.register('User', UserViewSet)
+router.register('Profile', ProfileViewSet)
 router.register('Material', MaterialViewSet)
 router.register('Menu', MenuViewSet)
-router.register('Supplier', SupplierViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
