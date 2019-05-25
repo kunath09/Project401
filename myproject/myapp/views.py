@@ -3,7 +3,7 @@ from django.views import generic
 # from material import Layout, Fieldset, Row, Span2, Span5, Span7
 from viewflow.flow.views import StartFlowMixin, FlowViewMixin,FlowMixin
 
-from .forms import MaterialForm,RestaurantForm
+from .forms import MaterialForm
 from .models import Material,BuyMaterialProcess
 from django.contrib.auth.decorators import login_required
 
@@ -92,36 +92,52 @@ class StartView(StartFlowMixin, generic.UpdateView):
     form_class = MaterialForm
 
     def get_object(self):
-        return self.activation.process.material
+        return self.activation.process.ordermaterial
 
     def activation_done(self, form):
-        material = form.save()
-        self.activation.process.material = material
+        ordermaterial = form.save()
+        self.activation.process.ordermaterial = ordermaterial
         super(StartView, self).activation_done(form)
 
-# class OrderView(StartFlowMixin, generic.UpdateView):
+# class OrderView(FlowMixin, generic.UpdateView):
 #     form_class = MaterialForm
 
 #     def get_object(self):
-#         return self.activation.process.material
+#         return self.activation.process.ordermaterial
 
 #     def activation_done(self, form):
-#         material = form.save()
-#         self.activation.process.material = material
+#         ordermaterial = form.save()
+#         print(f'------------------------{ordermaterial}------------------------')
+#         self.activation.process.ordermaterial = ordermaterial
 #         super(OrderView, self).activation_done(form)
+        
+
+
+# class Order2View(FlowMixin, generic.UpdateView):
+#     form_class = Material2Form
+
+#     def get_object(self):
+#         return self.activation.process.ordermaterial
+
+#     def activation_done(self, form):
+#         ordermaterial = form.save()
+#         print(f'------------------------{ordermaterial}------------------------')
+#         self.activation.process.ordermaterial = ordermaterial
+#         super(Order2View, self).activation_done(form)
+        
     
 class FixView(FlowMixin, generic.UpdateView):
     form_class = MaterialForm
 
     def get_object(self):
-        return self.activation.process.material
+        return self.activation.process.ordermaterial
 
     def activation_done(self, form):
-        material = form.save()
-        self.activation.process.material = material
+        ordermaterial = form.save()
+        self.activation.process.ordermaterial = ordermaterial
         super(FixView, self).activation_done(form)
 
 class DateView(FlowMixin, generic.UpdateView):
     
     def get_object(self):
-        return self.activation.process.material
+        return self.activation.process.ordermaterial

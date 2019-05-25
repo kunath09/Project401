@@ -22,6 +22,11 @@ class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     permission_classes = (IsAuthenticated,)
 
+# class BuyMaterialProcessViewSet(viewsets.ModelViewSet):
+#     queryset = BuyMaterialProcess.objects.all()
+#     serializer_class = BuyMaterialProcessSerializer
+#     permission_classes = (IsAuthenticated,)
+
 # class SupplierViewSet(viewsets.ModelViewSet):
 #     queryset = Supplier.objects.all()
 #     serializer_class = SupplierSerializer

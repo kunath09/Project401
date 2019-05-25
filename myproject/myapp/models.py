@@ -123,6 +123,33 @@ class Stock(models.Model):
     def __str__(self):
         return '{} {} '.format(self.restaurant, self.materialitem)
 
+class Material(models.Model):
+    name = models.CharField(max_length = 50,null=True)
+    quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+class OrderMaterial(models.Model):
+    restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE,null=True)
+    # materialitem = models.ManyToManyField('MaterialItem',blank=True)
+    # materialitems = models.ManyToManyField(Material,through='MaterialItem')
+    datestart = models.DateField(auto_now_add=False,null=True)
+    datesent = models.DateField(auto_now_add=False,null=True)
+    datereturn = models.DateField(auto_now_add=False,null=True,blank=True)
+
+    def __str__(self):
+        return ' {} / {} / {}'.format(self.pk,self.restaurant,self.datestart)
+
+class MaterialItem(models.Model):
+    material = models.ForeignKey('Material',on_delete = models.CASCADE,null=True)
+    orderMaterial = models.ForeignKey('OrderMaterial', on_delete=models.CASCADE,null=True)
+    quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
+    note = models.CharField(max_length = 50,blank=True)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.material, self.quantity,self.note)
+
 # class Material(models.Model):
 #     name = models.CharField(max_length = 50,null=True)
 #     quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
@@ -130,38 +157,13 @@ class Stock(models.Model):
 #     def __str__(self):
 #         return '{} {} '.format(self.name, self.quantity)
 
-# class OrderMaterial(models.Model):
-#     restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE,null=True)
-#     # material = models.ManyToManyField('Material',through='MaterialItem',blank=True)
-#     material = models.ForeignKey('Material',on_delete = models.CASCADE,null=True)
-#     datestart = models.DateField(auto_now_add=False,null=True)
-#     datesent = models.DateField(auto_now_add=False,null=True)
-    
-#     def __str__(self):
-#         return '{} {} {} {} '.format(self.restaurant,self.material,self.datestart,self.datesent)
-
 # class MaterialItem(models.Model):
 #     material = models.ForeignKey('Material',on_delete = models.CASCADE,null=True)
-#     orderMaterial = models.ForeignKey('OrderMaterial', on_delete=models.CASCADE,null=True)
 #     quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
+#     date = models.DateField(auto_now_add=False,null=True)
 
 #     def __str__(self):
 #         return '{} {}'.format(self.material, self.quantity)
-
-class Material(models.Model):
-    name = models.CharField(max_length = 50,null=True)
-    quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
-
-    def __str__(self):
-        return '{} {} '.format(self.name, self.quantity)
-
-class MaterialItem(models.Model):
-    material = models.ForeignKey('Material',on_delete = models.CASCADE,null=True)
-    quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
-    date = models.DateField(auto_now_add=False,null=True)
-
-    def __str__(self):
-        return '{} {}'.format(self.material, self.quantity)
 
 class Menu(models.Model):
     restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE)
@@ -175,7 +177,7 @@ class Menu(models.Model):
 
 class OrderMenu(models.Model):
     restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE,null=True)
-    menuitem = models.ManyToManyField('MenuItem',null=True)
+    menuitem = models.ManyToManyField('MenuItem')
     date = models.DateField(auto_now_add=False,null=True)
     success = models.BooleanField(default=False,null=True)
     
@@ -198,7 +200,8 @@ class MenuItem(models.Model):
 
 
 class BuyMaterialProcess(Process):
-    material = models.ForeignKey('Material',blank=True, null=True, on_delete=models.CASCADE)
+    ordermaterial = models.ForeignKey('OrderMaterial',blank=True, null=True, on_delete=models.CASCADE)
+    # materialitem = models.ForeignKey('MaterialItem',blank=True ,null=True, on_delete=models.CASCADE)
     # restaurant = models.ManyToManyField('Restaurant')
     text = models.CharField(max_length=100)
     num = models.IntegerField(null=True)

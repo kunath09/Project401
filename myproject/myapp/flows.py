@@ -2,14 +2,17 @@ from viewflow import flow
 from viewflow.base import this, Flow
 from viewflow.flow.views import CreateProcessView, UpdateProcessView
 from viewflow.lock import select_for_update_lock
-
+from viewflow import rest
+# from viewflow.rest import flow, views
+from viewflow.rest import views
 
 from . import models, views
 from .models import BuyMaterialProcess
 from viewflow import frontend
 
+@rest.register
 @frontend.register
-class BuyMetFlow(Flow):
+class BuyMatFlow(Flow):
     process_class = BuyMaterialProcess
     lock_impl = select_for_update_lock
 
@@ -26,6 +29,16 @@ class BuyMetFlow(Flow):
     # chef_Input_order = (
     #     flow.View(
     #         views.OrderView,
+    #         # CreateProcessView,
+    #         # fields=["material","text","num"]
+    #     ).Permission(
+    #         auto_create=True
+    #     ).Next(this.chef_Input_order2)
+    # )
+
+    # chef_Input_order2 = (
+    #     flow.View(
+    #         views.Order2View,
     #         # CreateProcessView,
     #         # fields=["material","text","num"]
     #     ).Permission(
@@ -90,15 +103,39 @@ class BuyMetFlow(Flow):
     check_deliverly = (
         flow.If(lambda activation: activation.process.approved)
         .Then(this.end_flow)
-        .Else(this.complain)
+        .Else(this.manager_complain)
     )
 
-    complain = (
+    manager_complain = (
         flow.View(
+            # views.DateView,fields=["reorder"]
             UpdateProcessView,fields=["text"]
         ).Permission(
             auto_create=True
-        ).Next(this.end_flow)
+        ).Next(this.supplier_return_order)
+    )
+
+    supplier_return_order = (
+        flow.View(
+            views.DateView,fields=["datereturn"]
+            # UpdateProcessView,fields=["text"]
+        ).Permission(
+            auto_create=True
+        ).Next(this.manager_reorder)
+    )
+
+    manager_reorder = (
+        flow.View(
+            UpdateProcessView,fields=["approved"]
+        ).Permission(
+            auto_create=True
+        ).Next(this.check_reorder)
+    )
+
+    check_reorder = (
+        flow.If(lambda activation: activation.process.approved)
+        .Then(this.sup_checkstock)
+        .Else(this.end_flow)
     )
 
     end_flow = flow.End()

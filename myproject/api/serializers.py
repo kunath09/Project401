@@ -8,12 +8,17 @@ class ProfileSerializer(serializers.ModelSerializer):
 class MaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Material
-        fields = ('user', 'quantity')
+        fields = ('name', 'quantity')
 
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
         fields = ('restaurant', 'name', 'description','price','image')
+
+# class BuyMaterialProcessSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Menu
+#         fields = ('restaurant', 'approved')
 
 # class SupplierSerializer(serializers.ModelSerializer):
 #     class Meta:

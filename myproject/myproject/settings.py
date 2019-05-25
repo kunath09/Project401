@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     'viewflow.frontend',
     'api',
     'social_django',
+    'viewflow.rest',
+    'rest_framework',
+    'rest_framework_swagger',
+    
+    
 ]
 
 MIDDLEWARE = [

@@ -19,18 +19,22 @@ from django.conf.urls import include, url
 from django.views import generic
 from material.frontend import urls as frontend_urls
 
-
 from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet
 from rest_framework.routers import DefaultRouter
 
 from django.contrib.auth import views as auth_views
 
 from myapp import views as core_views
+from viewflow.rest.viewset import FlowViewSet
+from myapp.flows import BuyMatFlow 
+
+buymatflow_urls = FlowViewSet(BuyMatFlow).urls
 
 router = DefaultRouter()
 router.register('Profile', ProfileViewSet)
 router.register('Material', MaterialViewSet)
 router.register('Menu', MenuViewSet)
+# router.register('BuyMaterialProcess', MenuViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -44,4 +48,5 @@ urlpatterns = [
     path('home/', core_views.home, name='home'),
     path('settings/', core_views.settings, name='settings'),
     path('settings/password/', core_views.password, name='password'),
+    path('workflow/api/buymatflow/', include(buymatflow_urls)),
 ]
