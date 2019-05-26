@@ -7,6 +7,7 @@ from django.forms import ModelForm
 
 from django.utils.encoding import python_2_unicode_compatible
 
+
 # USER_ROLE= (
 #         ('Che', 'Chef'),
 #         ('Man','Manager'),
@@ -118,23 +119,26 @@ class Restaurant(models.Model):
         return self.name
 
 class Stock(models.Model):
-    restaurant = models.OneToOneField('Restaurant',on_delete = models.CASCADE)
-    materialitem = models.ManyToManyField('MaterialItem')
+    restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE)
+    material = models.ForeignKey('Material',on_delete = models.PROTECT)
+    quantity = models.DecimalField(max_digits=8,decimal_places=0,default=0)
+    # materialitem = models.ManyToManyField('MaterialItem')
     # matItem should null=true,blank=true
 
     def __str__(self):
         # return '{} {} '.format(self.restaurant, self.materialitem)
         # return (f'{self.materialitem}')
-        return '{} '.format(self.restaurant)
+        return '{}{}{} '.format(self.restaurant,self.material,self.quantity)
 
-@receiver(post_save, sender=Restaurant)
-def create_stock_profile(sender, instance, created, **kwargs):
-    if created:
-        Stock.objects.create(restaurant=instance)
 
-@receiver(post_save, sender=Restaurant)
-def save_stock_profile(sender, instance, **kwargs):
-    instance.stock.save()
+# @receiver(post_save, sender=Restaurant)
+# def create_stock_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Stock.objects.create(restaurant=instance)
+
+# @receiver(post_save, sender=Restaurant)
+# def save_stock_profile(sender, instance, **kwargs):
+#     instance.stock.save()
 
     # def save(self, **kwargs):
     #     super(Stock, self).save(**kwargs)
@@ -162,6 +166,7 @@ class OrderMaterial(models.Model):
 class MaterialItem(models.Model):
     material = models.ForeignKey('Material',on_delete = models.CASCADE,null=True)
     orderMaterial = models.ForeignKey('OrderMaterial', on_delete=models.CASCADE,null=True)
+    # stock = models.ForeignKey('Stock', on_delete=models.CASCADE,null=True)
     quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
     # note = models.CharField(max_length = 50,blank=True)
 
@@ -222,6 +227,6 @@ class BuyMaterialProcess(Process):
     ordermaterial = models.ForeignKey('OrderMaterial',blank=True, null=True, on_delete=models.CASCADE)
     # materialitem = models.ForeignKey('MaterialItem',blank=True ,null=True, on_delete=models.CASCADE)
     # restaurant = models.ManyToManyField('Restaurant')
-    # text = models.CharField(max_length=100)
+    text = models.CharField(max_length=100,blank=True)
     # num = models.IntegerField(null=True)
     approved = models.BooleanField(default=False)

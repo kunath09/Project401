@@ -1,9 +1,14 @@
 from rest_framework import serializers
-from myapp.models import Profile,Material,Menu,Stock,MenuItem,OrderMenu
+from myapp.models import Profile,Material,Menu,Stock,MenuItem,OrderMenu,Restaurant
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user', 'restaurant', 'role','phone')
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = ('name', 'address','phone')
 
 class MaterialSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,9 +21,11 @@ class MenuSerializer(serializers.ModelSerializer):
         fields = ('restaurant', 'name', 'description','price','image')
 
 class StockSerializer(serializers.ModelSerializer):
+    restaurant = RestaurantSerializer(read_only=True)
+
     class Meta:
         model = Stock
-        fields = ('restaurant', 'materialitem')
+        fields = ('restaurant', 'material', 'quantity')
 
 class MenuItemSerializer(serializers.ModelSerializer):
     class Meta:
