@@ -19,7 +19,7 @@ from django.conf.urls import include, url
 from django.views import generic
 from material.frontend import urls as frontend_urls
 
-from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet
+from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet,StockViewSet,MenuItemViewSet,OrderMenuViewSet
 from rest_framework.routers import DefaultRouter
 
 from django.contrib.auth import views as auth_views
@@ -34,6 +34,9 @@ router = DefaultRouter()
 router.register('Profile', ProfileViewSet)
 router.register('Material', MaterialViewSet)
 router.register('Menu', MenuViewSet)
+router.register('Stock', StockViewSet)
+router.register('MenuItem', MenuItemViewSet)
+router.register('OrderMenu', OrderMenuViewSet)
 # router.register('BuyMaterialProcess', MenuViewSet)
 
 urlpatterns = [

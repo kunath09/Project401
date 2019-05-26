@@ -111,18 +111,36 @@ class Restaurant(models.Model):
     address = models.CharField(max_length = 100)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
+    # stock = models.ForeignKey('Stock',on_delete = models.CASCADE,null=True,blank=True)
     # phone = models.DecimalField(max_digits = 15,decimal_places=0)
 
     def __str__(self):
         return self.name
 
 class Stock(models.Model):
-    restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE)
-    materialitem = models.ForeignKey('MaterialItem',on_delete = models.CASCADE)
+    restaurant = models.OneToOneField('Restaurant',on_delete = models.CASCADE)
+    materialitem = models.ManyToManyField('MaterialItem')
+    # matItem should null=true,blank=true
 
     def __str__(self):
-        return '{} {} '.format(self.restaurant, self.materialitem)
+        # return '{} {} '.format(self.restaurant, self.materialitem)
+        # return (f'{self.materialitem}')
+        return '{} '.format(self.restaurant)
 
+@receiver(post_save, sender=Restaurant)
+def create_stock_profile(sender, instance, created, **kwargs):
+    if created:
+        Stock.objects.create(restaurant=instance)
+
+@receiver(post_save, sender=Restaurant)
+def save_stock_profile(sender, instance, **kwargs):
+    instance.stock.save()
+
+    # def save(self, **kwargs):
+    #     super(Stock, self).save(**kwargs)
+    #     restaurant = Restaurant(stock=self)
+    #     restaurant.save()
+    
 class Material(models.Model):
     name = models.CharField(max_length = 50,null=True)
     quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
@@ -139,16 +157,17 @@ class OrderMaterial(models.Model):
     datereturn = models.DateField(auto_now_add=False,null=True,blank=True)
 
     def __str__(self):
-        return ' {} / {} / {}'.format(self.pk,self.restaurant,self.datestart)
+        return ' {} / {}-{} / '.format(self.pk,self.restaurant,self.datestart)
 
 class MaterialItem(models.Model):
     material = models.ForeignKey('Material',on_delete = models.CASCADE,null=True)
     orderMaterial = models.ForeignKey('OrderMaterial', on_delete=models.CASCADE,null=True)
     quantity = models.DecimalField(max_digits=8,decimal_places=0,null=True)
-    note = models.CharField(max_length = 50,blank=True)
+    # note = models.CharField(max_length = 50,blank=True)
 
     def __str__(self):
-        return '{} {} {}'.format(self.material, self.quantity,self.note)
+        return '{} {} {}'.format(self.material, self.quantity,self.orderMaterial.restaurant)
+        # self.orderMaterial.restaurant
 
 # class Material(models.Model):
 #     name = models.CharField(max_length = 50,null=True)
@@ -174,7 +193,7 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.name
-
+# อาจจะต้องใช้ through
 class OrderMenu(models.Model):
     restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE,null=True)
     menuitem = models.ManyToManyField('MenuItem')
@@ -203,6 +222,6 @@ class BuyMaterialProcess(Process):
     ordermaterial = models.ForeignKey('OrderMaterial',blank=True, null=True, on_delete=models.CASCADE)
     # materialitem = models.ForeignKey('MaterialItem',blank=True ,null=True, on_delete=models.CASCADE)
     # restaurant = models.ManyToManyField('Restaurant')
-    text = models.CharField(max_length=100)
-    num = models.IntegerField(null=True)
+    # text = models.CharField(max_length=100)
+    # num = models.IntegerField(null=True)
     approved = models.BooleanField(default=False)

@@ -56,6 +56,9 @@ admin.site.register(Material, MaterialAdmin)
 
 class OrderMaterialAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in OrderMaterial._meta.fields]
+    # list_filter = (
+    #     ('stock', admin.RelatedOnlyFieldListFilter),
+    # )
     # inlines = (role_inline,)
     # fields = ('restaurant','materialitem','datestart','datesent')
     # inlines = (TermInlineAdmin,)
@@ -64,6 +67,10 @@ admin.site.register(OrderMaterial, OrderMaterialAdmin)
 
 class MaterialItemAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in MaterialItem._meta.fields]
+    list_filter = (
+        ('orderMaterial', admin.RelatedOnlyFieldListFilter),
+    )
+    # list_display_links = ['orderMaterial']
     # fields = ('material', 'quantity','note',)
 
 admin.site.register(MaterialItem, MaterialItemAdmin)
@@ -88,8 +95,8 @@ admin.site.register(MenuItem, MenuItemAdmin)
 
 class BuyMaterialProcessAdmin(ProcessAdmin):
     icon = '<i class="material-icons">flag</i>'
-    list_display = ['pk', 'created', 'status', 'participants',
-                     'text']
+    list_display = ['pk', 'created', 'status', 'participants'
+                     ]
     list_display_links = ['pk', 'created']
 
 admin.site.register(models.BuyMaterialProcess, BuyMaterialProcessAdmin)

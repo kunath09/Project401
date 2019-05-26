@@ -1,4 +1,4 @@
-from viewflow import flow
+from viewflow import flow,frontend
 from viewflow.base import this, Flow
 from viewflow.flow.views import CreateProcessView, UpdateProcessView
 from viewflow.lock import select_for_update_lock
