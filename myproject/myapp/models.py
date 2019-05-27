@@ -124,11 +124,29 @@ class Stock(models.Model):
     quantity = models.DecimalField(max_digits=8,decimal_places=0,default=0)
     # materialitem = models.ManyToManyField('MaterialItem')
     # matItem should null=true,blank=true
+    # def save(self, *args, **kwargs):
+    #     # totalobj = Stock.objects.count()
+    #     temp =''
+    #     for each in Stock.objects.all():
+    #         if each.material == temp:
+    #             add = each.quantity
+    #             old = SumStock.objects.filter(material=temp)
+    #         else:
+    #             SumStock.objects.create(material=each.material,quantity=each.quantity)
+    
 
     def __str__(self):
         # return '{} {} '.format(self.restaurant, self.materialitem)
         # return (f'{self.materialitem}')
-        return '{}{}{} '.format(self.restaurant,self.material,self.quantity)
+        return '{} {} {} '.format(self.restaurant,self.material,self.quantity)
+
+class SumStock(models.Model):
+    stock = models.ForeignKey('Stock',on_delete = models.CASCADE)
+    material = models.ForeignKey('Material',on_delete = models.PROTECT)
+    quantity = models.DecimalField(max_digits=8,decimal_places=0,default=0)
+
+    def __str__(self):
+        return '{} {} {} '.format(self.stock,self.material,self.quantity)
 
 
 # @receiver(post_save, sender=Restaurant)

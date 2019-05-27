@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restaurant,OrderMenu,Stock,MenuItem,OrderMaterial
+from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restaurant,OrderMenu,Stock,MenuItem,OrderMaterial,SumStock
 from viewflow.admin import ProcessAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -37,6 +37,11 @@ class StockAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in Stock._meta.fields]
     # fields = ('restaurant','materialitem',)
 admin.site.register(Stock, StockAdmin)
+
+class SumStockAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in SumStock._meta.fields]
+    # fields = ('restaurant','materialitem',)
+admin.site.register(SumStock, SumStockAdmin)
 
 # class role_inline(admin.TabularInline):
 #     model = MaterialItem
