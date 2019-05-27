@@ -119,9 +119,9 @@ class Restaurant(models.Model):
         return self.name
 
 class Stock(models.Model):
-    restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE)
-    material = models.ForeignKey('Material',on_delete = models.PROTECT)
-    quantity = models.DecimalField(max_digits=8,decimal_places=0,default=0)
+    restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE,null=True,blank=True)
+    material = models.ForeignKey('Material',on_delete = models.PROTECT,null=True,blank=True)
+    quantity = models.DecimalField(max_digits=8,decimal_places=0,default=0,null=True,blank=True)
     # materialitem = models.ManyToManyField('MaterialItem')
     # matItem should null=true,blank=true
     # def save(self, *args, **kwargs):
