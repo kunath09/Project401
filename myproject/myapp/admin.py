@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restaurant,OrderMenu,Stock,MenuItem,OrderMaterial,SumStock
+from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restaurant,OrderMenu,Stock,MenuItem,OrderMaterial,ManageMenuProcess,CheckStockProcess,AddStockProcess
 from viewflow.admin import ProcessAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -38,10 +38,10 @@ class StockAdmin(admin.ModelAdmin):
     # fields = ('restaurant','materialitem',)
 admin.site.register(Stock, StockAdmin)
 
-class SumStockAdmin(admin.ModelAdmin):
-    list_display  = [f.name for f in SumStock._meta.fields]
-    # fields = ('restaurant','materialitem',)
-admin.site.register(SumStock, SumStockAdmin)
+# class SumStockAdmin(admin.ModelAdmin):
+#     list_display  = [f.name for f in SumStock._meta.fields]
+#     # fields = ('restaurant','materialitem',)
+# admin.site.register(SumStock, SumStockAdmin)
 
 # class role_inline(admin.TabularInline):
 #     model = MaterialItem
@@ -105,3 +105,35 @@ class BuyMaterialProcessAdmin(ProcessAdmin):
     list_display_links = ['pk', 'created']
 
 admin.site.register(models.BuyMaterialProcess, BuyMaterialProcessAdmin)
+
+class ManageOrderProcessAdmin(ProcessAdmin):
+    icon = '<i class="material-icons">flag</i>'
+    list_display = ['pk', 'created', 'status', 'participants'
+                     ]
+    list_display_links = ['pk', 'created']
+
+admin.site.register(models.ManageOrderProcess, ManageOrderProcessAdmin)
+
+class ManageMenuProcessAdmin(ProcessAdmin):
+    icon = '<i class="material-icons">flag</i>'
+    list_display = ['pk', 'created', 'status', 'participants'
+                     ]
+    list_display_links = ['pk', 'created']
+
+admin.site.register(models.ManageMenuProcess, ManageMenuProcessAdmin)
+
+class CheckStockProcessAdmin(ProcessAdmin):
+    icon = '<i class="material-icons">flag</i>'
+    list_display = ['pk', 'created', 'status', 'participants'
+                     ]
+    list_display_links = ['pk', 'created']
+
+admin.site.register(models.CheckStockProcess, CheckStockProcessAdmin)
+
+class AddStockProcessAdmin(ProcessAdmin):
+    icon = '<i class="material-icons">flag</i>'
+    list_display = ['pk', 'created', 'status', 'participants'
+                     ]
+    list_display_links = ['pk', 'created']
+
+admin.site.register(models.AddStockProcess, AddStockProcessAdmin)

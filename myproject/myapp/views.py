@@ -4,13 +4,14 @@ from django.views import generic
 from viewflow.flow.views import StartFlowMixin, FlowViewMixin,FlowMixin
 
 from .forms import MaterialForm
-from .models import Material,BuyMaterialProcess
+from .models import Material,BuyMaterialProcess,ManageMenuProcess,ManageOrderProcess,CheckStockProcess,AddStockProcess
 from django.contrib.auth.decorators import login_required
 
 from social_django.models import UserSocialAuth
 from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
+from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restaurant,OrderMaterial,Stock
 
 @login_required
 def home(request):
@@ -141,3 +142,13 @@ class DateView(FlowMixin, generic.UpdateView):
     
     def get_object(self):
         return self.activation.process.ordermaterial
+
+class FixStockView(FlowMixin, generic.UpdateView):
+
+    def get_object(self):
+        return self.activation.process.stock
+
+class FixMenuView(FlowMixin, generic.UpdateView):
+    
+    def get_object(self):
+        return self.activation.process.menu

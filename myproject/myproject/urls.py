@@ -19,16 +19,35 @@ from django.conf.urls import include, url
 from django.views import generic
 from material.frontend import urls as frontend_urls
 
-from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet,StockViewSet,MenuItemViewSet,OrderMenuViewSet,SumStockViewSet,MaterialItemViewSet
+from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet,StockViewSet,MenuItemViewSet,OrderMenuViewSet,MaterialItemViewSet
 from rest_framework.routers import DefaultRouter
 
 from django.contrib.auth import views as auth_views
 
 from myapp import views as core_views
 from viewflow.rest.viewset import FlowViewSet
-from myapp.flows import BuyMatFlow 
+from myapp.flows import  AddStockFlow,CheckStockFlow
+from viewflow.rest.schemas import SchemaGenerator
+from viewflow.rest.viewset import FlowViewSet
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.schemas import get_schema_view
+from viewflow.rest import views as rest
 
-buymatflow_urls = FlowViewSet(BuyMatFlow).urls
+
+# flows_nsmap = {
+#     'orderflow': ManageOrderFlow
+# }
+# orderflow_urls = FlowViewSet(ManageOrderFlow).urls
+
+# flows_nsmap = {
+#     'addflow': AddStockFlow
+# }
+addflow_urls = FlowViewSet(AddStockFlow).urls
+
+# flows_nsmap = {
+#     'checkflow': CheckStockFlow
+# }
+checkflow_urls = FlowViewSet(CheckStockFlow).urls
 
 router = DefaultRouter()
 router.register('Profile', ProfileViewSet)
@@ -36,7 +55,7 @@ router.register('Material', MaterialViewSet)
 router.register('MaterialItem', MaterialItemViewSet)
 router.register('Menu', MenuViewSet)
 router.register('Stock', StockViewSet)
-router.register('SumStock', SumStockViewSet)
+# router.register('SumStock', SumStockViewSet)
 router.register('MenuItem', MenuItemViewSet)
 router.register('OrderMenu', OrderMenuViewSet)
 # router.register('BuyMaterialProcess', MenuViewSet)
@@ -53,5 +72,23 @@ urlpatterns = [
     path('home/', core_views.home, name='home'),
     path('settings/', core_views.settings, name='settings'),
     path('settings/password/', core_views.password, name='password'),
-    path('workflow/api/buymatflow/', include(buymatflow_urls)),
+    path('go', generic.RedirectView.as_view(url='/workflow/api/', permanent=False)),
+    # path('workflow/api/orderflow/', include(orderflow_urls)),
+    # path('workflow/api/addflow/', include((addflow_urls,'add'),namespace='addflow')),
+    path('workflow/api/addflow/', include(addflow_urls)),
+    path('workflow/api/checkflow/', include(checkflow_urls)),
+    # path('', include('rest_framework.urls', namespace='rest_framework')),
+    
+    # path('workflow/api/',
+    #     get_schema_view(generator_class=SchemaGenerator),
+    #     name='index'),
+    # path('workflow/api/auth/token/',
+    #     obtain_auth_token,
+    #     name='login'),
+    # path('workflow/api/flows/',
+    #     rest.FlowListView.as_view(ns_map=flows_nsmap),
+    #     name="flow-list"),
+    # path('workflow/api/tasks/',
+    #     rest.AllTaskListView.as_view(ns_map=flows_nsmap),
+    #     name="task-list"),
 ]

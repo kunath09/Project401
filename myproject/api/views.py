@@ -1,12 +1,12 @@
 from django.shortcuts import render
-
+from django.db.models import Count,Sum
 from rest_framework.viewsets import ModelViewSet
-from myapp.models import Profile,Material,Menu,Stock,MenuItem,OrderMenu,SumStock,MaterialItem
+from myapp.models import Profile,Material,Menu,Stock,MenuItem,OrderMenu,MaterialItem
 from rest_framework.authentication import SessionAuthentication,BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 
-from .serializers import ProfileSerializer,MaterialSerializer,MenuSerializer,StockSerializer,MenuItemSerializer,OrderMenuSerializer,SumStockSerializer,MaterialItemSerializer
+from .serializers import ProfileSerializer,MaterialSerializer,MenuSerializer,StockSerializer,MenuItemSerializer,OrderMenuSerializer,MaterialItemSerializer
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -31,11 +31,18 @@ class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
     permission_classes = (IsAuthenticated,)
+    
 
-class SumStockViewSet(viewsets.ModelViewSet):
-    queryset = SumStock.objects.all()
-    serializer_class = SumStockSerializer
-    permission_classes = (IsAuthenticated,)
+    # def get_queryset(self):
+    #     return Stock.objects.all().annotate(
+    #         total_item=Count('material'),
+    #         total_capacity=Sum('quantity')
+    #     )
+
+# class SumStockViewSet(viewsets.ModelViewSet):
+#     queryset = SumStock.objects.all()
+#     serializer_class = SumStockSerializer
+#     permission_classes = (IsAuthenticated,)
 
 class MenuItemViewSet(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
