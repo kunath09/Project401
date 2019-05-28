@@ -25,19 +25,22 @@ class MaterialItemViewSet(viewsets.ModelViewSet):
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
 class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.all()
+    # queryset = Stock.objects.annotate(all=Count('material'))
     serializer_class = StockSerializer
     permission_classes = (IsAuthenticated,)
-    
+    # def get(self, request):
+    #     queryset = Stock.objects.annotate(Count('material'))
+    #     return queryset
 
-    # def get_queryset(self):
-    #     return Stock.objects.all().annotate(
-    #         total_item=Count('material'),
-    #         total_capacity=Sum('quantity')
-    #     )
+    def get_queryset(self):
+        return Stock.objects.annotate(
+            total_item=Count('material'),
+            total_capacity=Sum('quantity')
+        )
 
 # class SumStockViewSet(viewsets.ModelViewSet):
 #     queryset = SumStock.objects.all()

@@ -28,11 +28,11 @@ class MaterialSerializer(serializers.ModelSerializer):
 class StockSerializer(serializers.ModelSerializer):
     # restaurant = RestaurantSerializer(read_only=True)
     # material = MaterialSerializer(read_only=True)
-    # total_item = serializers.IntegerField()
-    # total_capacity = serializers.IntegerField()
+    total_item = serializers.IntegerField()
+    total_capacity = serializers.IntegerField()
     class Meta:
         model = Stock
-        fields = ('pk','restaurant', 'material', 'quantity')
+        fields = ('pk','restaurant', 'material', 'quantity','total_item','total_capacity')
 
     def to_representation(self, instance):
         self.fields['restaurant'] =  RestaurantSerializer(read_only=True)
