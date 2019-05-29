@@ -110,9 +110,11 @@
         // app.appendChild(logo)
         app.appendChild(container)
 
+        arr = []
         function additem(id) {
-            var a = document.getElementById(id).value
-            alert(a)
+            var a = document.getElementById(id).value  
+            arr.push(a)
+            console.log(arr)
         }
         var i = 0
         var request = new XMLHttpRequest()
@@ -123,6 +125,7 @@
 
             console.log(request.responseText);
             // Begin accessing JSON data here
+            var arr = []
             var data = JSON.parse(this.response)
             if (request.status >= 200 && request.status < 400) {
                 data.forEach(movie => {
@@ -164,7 +167,6 @@
                     id.setAttribute("onClick", "additem(" + i + ")")
                     card.appendChild(id)
 
-
                     // document.getElementsByClassName("order").addEventListener("click", function () {
                     //     alert("You clicked the white element!");
                     // }, false);
@@ -186,9 +188,7 @@
 
     </script>
     <div>
-
         <button><a href="http://localhost:8000/summary/">Send Order</a></button>
-
     </div>
 
 </body>

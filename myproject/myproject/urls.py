@@ -19,7 +19,7 @@ from django.conf.urls import include, url
 from django.views import generic
 from material.frontend import urls as frontend_urls
 
-from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet,StockViewSet,MenuItemViewSet,OrderMenuViewSet,MaterialItemViewSet
+from api.views import ProfileViewSet,MaterialViewSet,MenuViewSet,StockViewSet,MenuItemViewSet,OrderMenuViewSet,MaterialItemViewSet,OrderMaterialViewSet
 from rest_framework.routers import DefaultRouter
 
 from django.contrib.auth import views as auth_views
@@ -35,9 +35,9 @@ from viewflow.rest import views as rest
 
 from django.conf.urls.static import static
 from django.conf import settings
-# flows_nsmap = {
-#     'orderflow': ManageOrderFlow
-# }
+flows_nsmap = {
+    'orderflow': ManageOrderFlow
+}
 orderflow_urls = FlowViewSet(ManageOrderFlow).urls
 
 # flows_nsmap = {
@@ -59,6 +59,7 @@ router.register('Stock', StockViewSet)
 # router.register('SumStock', SumStockViewSet)
 router.register('MenuItem', MenuItemViewSet)
 router.register('OrderMenu', OrderMenuViewSet)
+router.register('OrderMaterial', OrderMaterialViewSet)
 # router.register('BuyMaterialProcess', MenuViewSet)
 
 urlpatterns = [

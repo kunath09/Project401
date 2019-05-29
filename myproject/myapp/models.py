@@ -215,17 +215,17 @@ class Menu(models.Model):
     image = models.ImageField(upload_to = 'media')
 
     def __str__(self):
-        return '{} {} {} {}'.format(self.name,self.description,self.price,self.image)
+        return '{} '.format(self.name)
         # return self.name
 # แก้ตาม material เลย
 class OrderMenu(models.Model):
-    restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE,null=True)
+    # restaurant = models.ForeignKey('Restaurant',on_delete = models.CASCADE,null=True)
     # menuitem = models.ManyToManyField('MenuItem')
     date = models.DateField(auto_now_add=False,null=True)
     
     
     def __str__(self):
-        return '{} {} '.format(self.restaurant,self.date)
+        return '{} '.format(self.date)
 
 class MenuItem(models.Model):
     orderMenu = models.ForeignKey('OrderMenu',on_delete = models.CASCADE,null=True)
@@ -269,11 +269,11 @@ class ManageMenuProcess(Process):
     menu = models.ForeignKey('Menu',on_delete = models.CASCADE,null=True,blank=True)
     date = models.DateField(auto_now_add=False,null=True)
 
-class CheckStockProcess(Process):
-    stock = models.ForeignKey('Stock',blank=True, null=True,on_delete = models.CASCADE)
-    date = models.DateField(auto_now_add=False,null=True)
+# class CheckStockProcess(Process):
+#     stock = models.ForeignKey('Stock',blank=True, null=True,on_delete = models.CASCADE)
+#     date = models.DateField(auto_now_add=False,null=True)
 
-class AddStockProcess(Process):
-    stock = models.ForeignKey('Stock',blank=True, null=True,on_delete = models.CASCADE)
-    date = models.DateField(auto_now_add=False,null=True)
-    success = models.BooleanField(default=False)
+# class AddStockProcess(Process):
+#     stock = models.ForeignKey('Stock',blank=True, null=True,on_delete = models.CASCADE)
+#     date = models.DateField(auto_now_add=False,null=True)
+#     success = models.BooleanField(default=False)

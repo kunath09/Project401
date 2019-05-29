@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restaurant,OrderMenu,Stock,MenuItem,OrderMaterial,ManageMenuProcess,CheckStockProcess,AddStockProcess
+from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restaurant,OrderMenu,Stock,MenuItem,OrderMaterial,ManageMenuProcess
 from viewflow.admin import ProcessAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -122,18 +122,18 @@ class ManageMenuProcessAdmin(ProcessAdmin):
 
 admin.site.register(models.ManageMenuProcess, ManageMenuProcessAdmin)
 
-class CheckStockProcessAdmin(ProcessAdmin):
-    icon = '<i class="material-icons">flag</i>'
-    list_display = ['pk', 'created', 'status', 'participants'
-                     ]
-    list_display_links = ['pk', 'created']
+# class CheckStockProcessAdmin(ProcessAdmin):
+#     icon = '<i class="material-icons">flag</i>'
+#     list_display = ['pk', 'created', 'status', 'participants'
+#                      ]
+#     list_display_links = ['pk', 'created']
 
-admin.site.register(models.CheckStockProcess, CheckStockProcessAdmin)
+# admin.site.register(models.CheckStockProcess, CheckStockProcessAdmin)
 
-class AddStockProcessAdmin(ProcessAdmin):
-    icon = '<i class="material-icons">flag</i>'
-    list_display = ['pk', 'created', 'status', 'participants'
-                     ]
-    list_display_links = ['pk', 'created']
+# class AddStockProcessAdmin(ProcessAdmin):
+#     icon = '<i class="material-icons">flag</i>'
+#     list_display = ['pk', 'created', 'status', 'participants'
+#                      ]
+#     list_display_links = ['pk', 'created']
 
-admin.site.register(models.AddStockProcess, AddStockProcessAdmin)
+# admin.site.register(models.AddStockProcess, AddStockProcessAdmin)

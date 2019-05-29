@@ -7,7 +7,7 @@ from viewflow import rest
 from viewflow.rest import flow as rf
 from viewflow.rest import views as v
 from . import models, views
-from .models import BuyMaterialProcess,BuyMaterialTask,ManageOrderProcess,ManageMenuProcess,CheckStockProcess,AddStockProcess
+from .models import BuyMaterialProcess,BuyMaterialTask,ManageOrderProcess,ManageMenuProcess
 from viewflow import frontend
 
 # @rest.register

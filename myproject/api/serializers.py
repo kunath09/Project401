@@ -82,17 +82,17 @@ class MenuSerializer(serializers.ModelSerializer):
         fields = ('pk','restaurant', 'name', 'description','price','image')
 
 class MenuItemSerializer(serializers.ModelSerializer):
-    menu = MenuSerializer(read_only=True)
+    # menu = MenuSerializer(read_only=True)
     class Meta:
         model = MenuItem
         fields = ('orderMenu','menu','quantity')
 
 class OrderMenuSerializer(serializers.ModelSerializer):
-    restaurant = RestaurantSerializer(read_only=True)
-    menuItem = MenuItemSerializer(read_only=True)
+    # restaurant = RestaurantSerializer(read_only=True)
+    # menuItem = MenuItemSerializer(read_only=True)
     class Meta:
         model = OrderMenu
-        fields = ('restaurant', 'date')
+        fields = ('date',)
 
 
 

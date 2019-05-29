@@ -4,7 +4,7 @@ from django.views import generic
 from viewflow.flow.views import StartFlowMixin, FlowViewMixin,FlowMixin
 
 from .forms import MaterialForm
-from .models import Material,BuyMaterialProcess,ManageMenuProcess,ManageOrderProcess,CheckStockProcess,AddStockProcess
+from .models import Material,BuyMaterialProcess,ManageMenuProcess,ManageOrderProcess
 from django.contrib.auth.decorators import login_required
 
 from social_django.models import UserSocialAuth
