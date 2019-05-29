@@ -64,7 +64,7 @@ router.register('OrderMaterial', OrderMaterialViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/',generic.RedirectView.as_view(url='/workflow/',permanent=False)),
+    path('test/',generic.RedirectView.as_view(url='/workflow/',permanent=False),name="workflow"),
     path('',include(frontend_urls)),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
