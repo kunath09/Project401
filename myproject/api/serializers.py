@@ -28,11 +28,14 @@ class MaterialSerializer(serializers.ModelSerializer):
 class StockSerializer(serializers.ModelSerializer):
     # restaurant = RestaurantSerializer(read_only=True)
     # material = MaterialSerializer(read_only=True)
-    total_item = serializers.IntegerField()
-    total_capacity = serializers.IntegerField()
+    # total_item = serializers.IntegerField()
+    # total_capacity = serializers.IntegerField()
+    # total = serializers.IntegerField()
+    
     class Meta:
         model = Stock
-        fields = ('pk','restaurant', 'material', 'quantity','total_item','total_capacity')
+        fields = ('pk','restaurant', 'material', 'quantity')
+        # fields = '__all__'
 
     def to_representation(self, instance):
         self.fields['restaurant'] =  RestaurantSerializer(read_only=True)
@@ -76,20 +79,20 @@ class MenuSerializer(serializers.ModelSerializer):
     restaurant = RestaurantSerializer(read_only=True)
     class Meta:
         model = Menu
-        fields = ('restaurant', 'name', 'description','price','image')
+        fields = ('pk','restaurant', 'name', 'description','price','image')
 
 class MenuItemSerializer(serializers.ModelSerializer):
     menu = MenuSerializer(read_only=True)
     class Meta:
         model = MenuItem
-        fields = ('menu','quantity')
+        fields = ('orderMenu','menu','quantity')
 
 class OrderMenuSerializer(serializers.ModelSerializer):
     restaurant = RestaurantSerializer(read_only=True)
     menuItem = MenuItemSerializer(read_only=True)
     class Meta:
         model = OrderMenu
-        fields = ('restaurant', 'menuitem', 'date')
+        fields = ('restaurant', 'date')
 
 
 

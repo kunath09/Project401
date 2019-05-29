@@ -17,6 +17,12 @@ from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restau
 def home(request):
     return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/home.html')
 
+def menu(request):
+    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/2final.html',)
+
+def summary(request):
+    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/3final.html',)
+
 @login_required
 def settings(request):
     user = request.user

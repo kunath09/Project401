@@ -26,28 +26,29 @@ from django.contrib.auth import views as auth_views
 
 from myapp import views as core_views
 from viewflow.rest.viewset import FlowViewSet
-from myapp.flows import  AddStockFlow,CheckStockFlow
+from myapp.flows import  ManageOrderFlow
 from viewflow.rest.schemas import SchemaGenerator
 from viewflow.rest.viewset import FlowViewSet
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.schemas import get_schema_view
 from viewflow.rest import views as rest
 
-
+from django.conf.urls.static import static
+from django.conf import settings
 # flows_nsmap = {
 #     'orderflow': ManageOrderFlow
 # }
-# orderflow_urls = FlowViewSet(ManageOrderFlow).urls
+orderflow_urls = FlowViewSet(ManageOrderFlow).urls
 
 # flows_nsmap = {
 #     'addflow': AddStockFlow
-# }
-addflow_urls = FlowViewSet(AddStockFlow).urls
+# # }
+# addflow_urls = FlowViewSet(AddStockFlow).urls
 
-# flows_nsmap = {
-#     'checkflow': CheckStockFlow
-# }
-checkflow_urls = FlowViewSet(CheckStockFlow).urls
+# # flows_nsmap = {
+# #     'checkflow': CheckStockFlow
+# # }
+# checkflow_urls = FlowViewSet(CheckStockFlow).urls
 
 router = DefaultRouter()
 router.register('Profile', ProfileViewSet)
@@ -70,13 +71,15 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(),{'template_name': 'myapp/templates/registration/login.html'}, name='login'),
     path('logout/', auth_views.LogoutView.as_view(),{'template_name': 'myapp/templates/registration/logout.html'}, name='logout'),
     path('home/', core_views.home, name='home'),
+    path('menu/', core_views.menu, name='menu'),
+    path('summary/', core_views.summary, name='summary'),
     path('settings/', core_views.settings, name='settings'),
     path('settings/password/', core_views.password, name='password'),
     path('go', generic.RedirectView.as_view(url='/workflow/api/', permanent=False)),
-    # path('workflow/api/orderflow/', include(orderflow_urls)),
+    path('workflow/api/orderflow/', include(orderflow_urls)),
     # path('workflow/api/addflow/', include((addflow_urls,'add'),namespace='addflow')),
-    path('workflow/api/addflow/', include(addflow_urls)),
-    path('workflow/api/checkflow/', include(checkflow_urls)),
+    # path('workflow/api/addflow/', include(addflow_urls)),
+    # path('workflow/api/checkflow/', include(checkflow_urls)),
     # path('', include('rest_framework.urls', namespace='rest_framework')),
     
     # path('workflow/api/',
@@ -91,4 +94,4 @@ urlpatterns = [
     # path('workflow/api/tasks/',
     #     rest.AllTaskListView.as_view(ns_map=flows_nsmap),
     #     name="task-list"),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

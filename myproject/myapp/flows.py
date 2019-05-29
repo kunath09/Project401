@@ -156,7 +156,7 @@ class ManageOrderFlow(Flow):
 
     check_return = (
         f.If(lambda activation: activation.process.returnitem)
-        .Then(this.chef_cook)
+        .Then(this.chef_serve)
         .Else(this.chef_pay)
     )
 
@@ -194,68 +194,54 @@ class ManageMenuFlow(Flow):
 
     end_flow = f.End()
 
-@rest.register
-@frontend.register
-class CheckStockFlow(Flow):
-    process_class = CheckStockProcess
-    lock_impl = select_for_update_lock
+# @rest.register
+# @frontend.register
+# class CheckStockFlow(Flow):
+#     process_class = CheckStockProcess
+#     lock_impl = select_for_update_lock
 
-    # manager_start_checkstock = (
-    #     f.Start(
-    #         CreateProcessView,
-    #         fields=["date"]
-    #     ).Permission(
-    #         auto_create=True
-    #     ).Next(this.chef_fix_stock)
-    # )
-
-    chef_fix_stock = (
-        rf.Start(
-            v.CreateProcessView,
-            fields=["stock"]
-        ).Permission(
-            auto_create=True
-        ).Next(this.chef_fix_stock_quantity)
-    )
-
-    chef_fix_stock_quantity = (
-        f.View(
-            views.FixStockView,fields=["quantity"]
-            # v.UpdateProcessView,fields=["quantity"]
-        ).Permission(
-            auto_create=True
-        ).Next(this.end_flow)
-    )
-
-    end_flow = f.End()
     
-@rest.register
-@frontend.register
-class AddStockFlow(Flow):
-    process_class = AddStockProcess
-    lock_impl = select_for_update_lock
 
-    # manager_start_addstock = (
-    #     f.Start(
-    #         CreateProcessView,
-    #         fields=["date"]
-    #     ).Permission(
-    #         auto_create=True
-    #     ).Next(this.chef_addstock)
-    # )
+#     chef_fix_stock = (
+#         rf.Start(
+#             v.CreateProcessView,
+#             fields=["stock"]
+#         ).Permission(
+#             auto_create=True
+#         ).Next(this.chef_fix_stock_quantity)
+#     )
 
-    chef_addstock = (
-        rf.Start(
-            v.CreateProcessView,fields=["success"]
-        ).Permission(
-            auto_create=True
-        ).Next(this.check_addstock)
-    )
+#     chef_fix_stock_quantity = (
+#         f.View(
+#             views.FixStockView,fields=["quantity"]
+#             # v.UpdateProcessView,fields=["quantity"]
+#         ).Permission(
+#             auto_create=True
+#         ).Next(this.end_flow)
+#     )
 
-    check_addstock = (
-        rf.If(lambda activation: activation.process.success)
-        .Then(this.end_flow)
-        .Else(this.end_flow)
-    )
+#     end_flow = f.End()
+    
+# @rest.register
+# @frontend.register
+# class AddStockFlow(Flow):
+#     process_class = AddStockProcess
+#     lock_impl = select_for_update_lock
 
-    end_flow = f.End()
+    
+
+#     chef_addstock = (
+#         rf.Start(
+#             v.CreateProcessView,fields=["success"]
+#         ).Permission(
+#             auto_create=True
+#         ).Next(this.check_addstock)
+#     )
+
+#     check_addstock = (
+#         rf.If(lambda activation: activation.process.success)
+#         .Then(this.end_flow)
+#         .Else(this.end_flow)
+#     )
+
+#     end_flow = f.End()

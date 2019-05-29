@@ -6,6 +6,8 @@ from rest_framework.authentication import SessionAuthentication,BasicAuthenticat
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 
+from django.http import HttpResponse
+
 from .serializers import ProfileSerializer,MaterialSerializer,MenuSerializer,StockSerializer,MenuItemSerializer,OrderMenuSerializer,MaterialItemSerializer
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
@@ -25,7 +27,7 @@ class MaterialItemViewSet(viewsets.ModelViewSet):
 class MenuViewSet(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
 class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.all()
@@ -36,11 +38,22 @@ class StockViewSet(viewsets.ModelViewSet):
     #     queryset = Stock.objects.annotate(Count('material'))
     #     return queryset
 
-    def get_queryset(self):
-        return Stock.objects.annotate(
-            total_item=Count('material'),
-            total_capacity=Sum('quantity')
-        )
+    # def get_queryset(self):
+    #     # Stock.objects.all().values('quantity')
+    #     query = Stock.objects.filter(material__name='chicken').values('quantity')
+
+
+    #     # for i in query:
+    #     #     total += i['quantity']
+
+
+    #     return query
+
+
+        # return Stock.objects.annotate(
+        #     total_item=Count('material'),
+        #     total_capacity=Sum('quantity')
+        # )
 
 # class SumStockViewSet(viewsets.ModelViewSet):
 #     queryset = SumStock.objects.all()
