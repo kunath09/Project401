@@ -28,9 +28,34 @@ STRUCTURE (VIEWFLOW)
 Project401/
 ├── myproject
 │   ├── api
+│   │   ├── __pycache__
+│   │   ├── migrations
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── tests.py
+│   │   ├── views.py
 │   ├── media
 │   ├── myapp
+│   │   ├── __pycache__
+│   │   ├── migrations
+│   │   ├── templates
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── flows.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── views.py
 │   ├── myproject
+│   │   ├── __pycache__
+│   │   ├── __init__.py
+│   │   ├── setting.py
+│   │   ├── urls.py
+│   │   ├── wsgi.py
 │   ├── manage.py
 │   ├── requirements.txt
 └── README.md
