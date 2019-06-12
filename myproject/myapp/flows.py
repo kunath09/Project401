@@ -10,7 +10,6 @@ from . import models, views
 from .models import BuyMaterialProcess,BuyMaterialTask,ManageOrderProcess,ManageMenuProcess
 from viewflow import frontend
 
-# @rest.register
 @frontend.register
 class BuyMatFlow(Flow):
     process_class = BuyMaterialProcess
@@ -46,20 +45,6 @@ class BuyMatFlow(Flow):
             auto_create=True
         ).Next(this.manager_approve_order)
     )
-
-    # sup_checkstock = (
-    #     f.View(
-    #         UpdateProcessView,fields=["approved"]
-    #     ).Permission(
-    #         auto_create=True
-    #     ).Next(this.check_stock)
-    # )
-
-    # check_stock = (
-    #     f.If(lambda activation: activation.process.approved)
-    #     .Then(this.sup_deliverly)
-    #     .Else(this.chef_fix_order)
-    # )
 
     sup_deliverly = (
         f.View(
@@ -170,7 +155,6 @@ class ManageOrderFlow(Flow):
 
     end_flow = f.End()
 
-# @rest.register
 @frontend.register
 class ManageMenuFlow(Flow):
     process_class = ManageMenuProcess
@@ -193,55 +177,3 @@ class ManageMenuFlow(Flow):
     )
 
     end_flow = f.End()
-
-# @rest.register
-# @frontend.register
-# class CheckStockFlow(Flow):
-#     process_class = CheckStockProcess
-#     lock_impl = select_for_update_lock
-
-    
-
-#     chef_fix_stock = (
-#         rf.Start(
-#             v.CreateProcessView,
-#             fields=["stock"]
-#         ).Permission(
-#             auto_create=True
-#         ).Next(this.chef_fix_stock_quantity)
-#     )
-
-#     chef_fix_stock_quantity = (
-#         f.View(
-#             views.FixStockView,fields=["quantity"]
-#             # v.UpdateProcessView,fields=["quantity"]
-#         ).Permission(
-#             auto_create=True
-#         ).Next(this.end_flow)
-#     )
-
-#     end_flow = f.End()
-    
-# @rest.register
-# @frontend.register
-# class AddStockFlow(Flow):
-#     process_class = AddStockProcess
-#     lock_impl = select_for_update_lock
-
-    
-
-#     chef_addstock = (
-#         rf.Start(
-#             v.CreateProcessView,fields=["success"]
-#         ).Permission(
-#             auto_create=True
-#         ).Next(this.check_addstock)
-#     )
-
-#     check_addstock = (
-#         rf.If(lambda activation: activation.process.success)
-#         .Then(this.end_flow)
-#         .Else(this.end_flow)
-#     )
-
-#     end_flow = f.End()

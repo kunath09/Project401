@@ -34,6 +34,25 @@
             display: block;
             margin: 1rem auto;
             max-width: 100%;
+            width: 200px;
+            height: 200px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        a:link,
+        a:visited {
+            text-decoration: none;
         }
 
         p {
@@ -88,39 +107,170 @@
 </head>
 
 <body>
+    {% block content %}
+    {% csrf_token %}
     <header>
         <h1>Menu</h1>
     </header>
 
-    <!-- <ul>
-        <li><a href="#food">Food</a></li>
-    </ul> -->
+    {% if user.is_authenticated %}
 
     <div id="cont"></div>
 
     <script>
+        var request = new XMLHttpRequest()
+        request.open('GET', 'http://localhost:8000/api/Menu/', true)
+
         const app = document.getElementById('cont')
-
-        // const logo = document.createElement('img')
-        // logo.src = 'logo.png'
-
         const container = document.createElement('div')
         container.setAttribute('class', 'container')
-
-        // app.appendChild(logo)
         app.appendChild(container)
 
         arr = []
         function additem(id) {
-            var a = document.getElementById(id).value  
+
+            var a = document.getElementById(id).value
             arr.push(a)
             console.log(arr)
+            const x = document.createElement('p')
+
+            /////////////////////////get show name select////////////////////
+
+            var root = 'http://localhost:8000/api/Menu/'
+
+            root += a
+            var requestitem = new XMLHttpRequest()
+            requestitem.open('GET', root, true)
+
+            requestitem.onload = function () {
+
+                console.log(requestitem.responseText);
+                // Begin accessing JSON data here
+
+                var item = JSON.parse(this.response)
+                if (requestitem.status >= 200 && requestitem.status < 400) {
+
+                    x.textContent = item.name
+
+                } else {
+                    const errorMessage = document.createElement('marquee')
+                    errorMessage.textContent = `Gah, it's not working!`
+                    app.appendChild(errorMessage)
+                }
+            }
+
+            requestitem.send()
+            items.appendChild(x)
+
+        }
+
+        function myFunction() {
+            var index
+
+            ////////////////post ordermenu//////////////
+            var thisdate = new Date();
+
+            var lastorder
+            var order = JSON.stringify({
+                "date": "" + thisdate.getFullYear() + "-" + thisdate.getMonth() + "-" + thisdate.getDate(),
+
+            })
+            console.log(order);
+            var crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+            console.log(crf_token)
+
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost:8000/api/OrderMenu/",
+                headers: { "X-CSRFToken": crf_token },
+                data: order,
+                error: function (e) {
+                    console.log(e);
+                },
+                success: function (response) {
+                    console.log(response)
+                    lastorder = response.pk
+                    console.log(lastorder)
+                    postmenuitem(lastorder)
+                    ///call post menuitem///
+                },
+                dataType: "json",
+                contentType: "application/json"
+            });
+
+            function postmenuitem(lastorder) {
+                /////////////////post menuitem/////////////////////
+                console.log("this " + lastorder)
+                var lastitem
+                // console.log("wowwwwwwwwwwwwwwww" + maxorder)
+                for (index = 0; index < arr.length; index++) {
+                    console.log(arr[index]);
+
+                    var data = JSON.stringify({
+                        "orderMenu": lastorder,
+                        "menu": arr[index],
+                        "quantity": 1,
+                    })
+
+
+                    var crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                    console.log(crf_token)
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "http://localhost:8000/api/MenuItem/",
+                        headers: { "X-CSRFToken": crf_token },
+                        data: data,
+                        error: function (e) {
+                            console.log(e);
+                        },
+                        success: function (response) {
+                            console.log(response)
+                            lastitem = response.pk
+                            console.log(lastitem)
+                            postviewflow(lastitem)
+                            ///call postviewflow///
+                        },
+                        dataType: "json",
+                        contentType: "application/json"
+                    });
+
+
+
+                }
+            }
+
+            function postviewflow(lastitem) {
+                /////////////////post viewflow order/////////////////////
+
+                var datalast = JSON.stringify({
+
+                    "menuitem": lastitem,
+
+                })
+                // console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX" + maxitem)
+
+                var crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
+                console.log(crf_token)
+
+                $.ajax({
+                    type: 'POST',
+                    url: "http://localhost:8000/workflow/api/tasks/manageorder/chef_recieve_order/",
+                    headers: { "X-CSRFToken": crf_token },
+                    data: datalast,
+                    error: function (e) {
+                        console.log(e);
+                    },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+
+            }
+
         }
         var i = 0
-        var request = new XMLHttpRequest()
-        request.open('GET', 'http://localhost:8000/api/Menu/', true)
-        // request.withCredentials = true;
-        // request.setRequestHeader("Authorization", 'Basic ' + btoa('kunat:kunat'));
+
+        /////////////////////get show menu/////////////////////////
         request.onload = function () {
 
             console.log(request.responseText);
@@ -133,7 +283,6 @@
 
                     const card = document.createElement('div')
                     card.setAttribute('class', 'card')
-                    // card.setAttribute('onclick', 'myFunction()')
 
                     const h1 = document.createElement('h1')
                     h1.textContent = movie.name
@@ -167,11 +316,6 @@
                     id.setAttribute("onClick", "additem(" + i + ")")
                     card.appendChild(id)
 
-                    // document.getElementsByClassName("order").addEventListener("click", function () {
-                    //     alert("You clicked the white element!");
-                    // }, false);
-                    // myFunction()
-
                     i += 1
                 })
             } else {
@@ -179,18 +323,31 @@
                 errorMessage.textContent = `Gah, it's not working!`
                 app.appendChild(errorMessage)
             }
-
-
-
         }
 
         request.send()
 
-    </script>
-    <div>
-        <button><a href="http://localhost:8000/summary/">Send Order</a></button>
-    </div>
+        const items = document.createElement('div')
+        const head = document.createElement('h1')
+        head.textContent = 'item selected'
+        items.setAttribute('class', 'card')
+        items.appendChild(head)
+        app.appendChild(items)
 
+
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <div>
+        <!-- <p id='select'>item selected</p> -->
+
+    </div>
+    <div>
+        <button onclick="myFunction()"><a href="http://localhost:8000/summary/">Send Order</a></button>
+        
+    </div>
+    {% endif %}
+    {% endblock %}
 </body>
 
 </html>

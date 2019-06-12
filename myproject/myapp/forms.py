@@ -10,13 +10,6 @@ from django.forms import inlineformset_factory
 from material import Layout, Row
 from material.forms import AjaxModelSelect, get_ajax_suggestions
 
-
-
-# class RestaurantForm(ModelForm):
-#     class Meta:
-#         model = OrderMaterial
-#         fields = ['restaurant','datestart']
-
 class MaterialForm(ModelForm):
 
     items = InlineFormSetField(
@@ -27,22 +20,7 @@ class MaterialForm(ModelForm):
         fields = ['restaurant','datestart']
         
         
-    # ถ้าไม่ได้จริงๆต้องสั่งทีละชิ้น
-    # class OrderForm(ModelForm):
-    #     class Meta:
-    #         model = MaterialItem
-    #         fields = ['material','quantity']
 
-    # OrderFormSet = forms.formset_factory(OrderForm, extra=3, can_delete=True)
-
-    # Orders = FormSetField(OrderFormSet)
-
-# class Material2Form(ModelForm):
-#     class Meta:
-#         model = OrderMaterial
-#         fields = []
-
-   
 
     
         

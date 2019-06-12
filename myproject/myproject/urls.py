@@ -40,15 +40,6 @@ flows_nsmap = {
 }
 orderflow_urls = FlowViewSet(ManageOrderFlow).urls
 
-# flows_nsmap = {
-#     'addflow': AddStockFlow
-# # }
-# addflow_urls = FlowViewSet(AddStockFlow).urls
-
-# # flows_nsmap = {
-# #     'checkflow': CheckStockFlow
-# # }
-# checkflow_urls = FlowViewSet(CheckStockFlow).urls
 
 router = DefaultRouter()
 router.register('Profile', ProfileViewSet)
@@ -56,11 +47,9 @@ router.register('Material', MaterialViewSet)
 router.register('MaterialItem', MaterialItemViewSet)
 router.register('Menu', MenuViewSet)
 router.register('Stock', StockViewSet)
-# router.register('SumStock', SumStockViewSet)
 router.register('MenuItem', MenuItemViewSet)
 router.register('OrderMenu', OrderMenuViewSet)
 router.register('OrderMaterial', OrderMaterialViewSet)
-# router.register('BuyMaterialProcess', MenuViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -78,21 +67,5 @@ urlpatterns = [
     path('settings/password/', core_views.password, name='password'),
     path('go', generic.RedirectView.as_view(url='/workflow/api/', permanent=False)),
     path('workflow/api/orderflow/', include(orderflow_urls)),
-    # path('workflow/api/addflow/', include((addflow_urls,'add'),namespace='addflow')),
-    # path('workflow/api/addflow/', include(addflow_urls)),
-    # path('workflow/api/checkflow/', include(checkflow_urls)),
-    # path('', include('rest_framework.urls', namespace='rest_framework')),
     
-    # path('workflow/api/',
-    #     get_schema_view(generator_class=SchemaGenerator),
-    #     name='index'),
-    # path('workflow/api/auth/token/',
-    #     obtain_auth_token,
-    #     name='login'),
-    # path('workflow/api/flows/',
-    #     rest.FlowListView.as_view(ns_map=flows_nsmap),
-    #     name="flow-list"),
-    # path('workflow/api/tasks/',
-    #     rest.AllTaskListView.as_view(ns_map=flows_nsmap),
-    #     name="task-list"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

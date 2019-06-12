@@ -31,35 +31,9 @@ class MenuViewSet(viewsets.ModelViewSet):
 
 class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.all()
-    # queryset = Stock.objects.annotate(all=Count('material'))
     serializer_class = StockSerializer
     permission_classes = (IsAuthenticated,)
-    # def get(self, request):
-    #     queryset = Stock.objects.annotate(Count('material'))
-    #     return queryset
-
-    # def get_queryset(self):
-    #     # Stock.objects.all().values('quantity')
-    #     query = Stock.objects.filter(material__name='chicken').values('quantity')
-
-
-    #     # for i in query:
-    #     #     total += i['quantity']
-
-
-    #     return query
-
-
-        # return Stock.objects.annotate(
-        #     total_item=Count('material'),
-        #     total_capacity=Sum('quantity')
-        # )
-
-# class SumStockViewSet(viewsets.ModelViewSet):
-#     queryset = SumStock.objects.all()
-#     serializer_class = SumStockSerializer
-#     permission_classes = (IsAuthenticated,)
-
+ 
 class MenuItemViewSet(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
@@ -75,14 +49,5 @@ class OrderMenuViewSet(viewsets.ModelViewSet):
     serializer_class = OrderMenuSerializer
     permission_classes = (IsAuthenticated,)
 
-# class BuyMaterialProcessViewSet(viewsets.ModelViewSet):
-#     queryset = BuyMaterialProcess.objects.all()
-#     serializer_class = BuyMaterialProcessSerializer
-#     permission_classes = (IsAuthenticated,)
-
-# class SupplierViewSet(viewsets.ModelViewSet):
-#     queryset = Supplier.objects.all()
-#     serializer_class = SupplierSerializer
-#     permission_classes = (IsAuthenticated,)
 
     

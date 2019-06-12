@@ -36,6 +36,23 @@
             max-width: 100%;
         }
 
+        button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        a:link,
+        a:visited {
+            text-decoration: none;
+        }
+
         p {
             padding: 0 2.5rem 2.5rem;
             margin: 0;
@@ -92,39 +109,17 @@
     <header>
         <h1>Summary</h1>
     </header>
-    <p>Hello {{ user.username }}!</p>
+    {% csrf_token %}
+    
+    <p>Your Order has been send.</p>
     <div id="cont"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script>
 
 
-        var data = JSON.stringify({
-                "orderMenu": 1,
-                "menu": 2,
-                "quantity": 20,
-            })
-
-
-        var crf_token = $('[name="csrfmiddlewaretoken"]').attr('value');
-        console.log(crf_token)
-        $.ajax({
-            type: 'POST',
-            url: "http://localhost:8000/api/MenuItem/",
-            headers:{"X-CSRFToken": 'q0gpKIpOcIBBvcYXrsR9AqPhNtgNFSY7cZZhAHWimPLbJ8FF9y8dD1sHBIOncAZy'},
-            data: data,
-            error: function (e) {
-                console.log(e);
-            },
-            dataType: "json",
-            contentType: "application/json"
-        });
-
-      
-
-
 
     </script>
-    <button><a href="">Confirm Order</a></button>
+    <button style="align-content: center"><a href="http://localhost:8000/menu/">To Menu</a></button>
 
 </body>
 

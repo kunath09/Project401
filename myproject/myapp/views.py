@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
 from django.views import generic
-# from material import Layout, Fieldset, Row, Span2, Span5, Span7
 from viewflow.flow.views import StartFlowMixin, FlowViewMixin,FlowMixin
 
 from .forms import MaterialForm
@@ -16,10 +15,10 @@ from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restau
 @login_required
 def home(request):
     return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/home.html')
-
+@login_required
 def menu(request):
     return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/2final.html',)
-
+@login_required
 def summary(request):
     return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/3final.html',)
 
@@ -70,32 +69,9 @@ def password(request):
     else:
         form = PasswordForm(request.user)
     return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/password.html', {'form': form})
-###############################
-    
-# def login(request):
-#     return render(request, 'templates/login.html')
-    
-# def logout(request):
-#     return render(request, 'templates/logout.html')
 
-# class StartView(StartFlowMixin, generic.UpdateView):
-#     form_class = CreatOrderForm
-#     # model = BuyMetProcess
-#     # fields = ['fields','form_class']
-
-#     def get_object(self):
-#         return self.activation.process.material
-
-#     def activation_done(self, form):
-#         material = form.save()
-#         self.activation.process.material = material
-#         super(StartView, self).activation_done(form)
-
-# def InputMaterial():
-#     area =[""]
 
 class StartView(StartFlowMixin, generic.UpdateView):
-    # form_class = RestaurantForm
     form_class = MaterialForm
 
     def get_object(self):
@@ -106,33 +82,7 @@ class StartView(StartFlowMixin, generic.UpdateView):
         self.activation.process.ordermaterial = ordermaterial
         super(StartView, self).activation_done(form)
 
-# class OrderView(FlowMixin, generic.UpdateView):
-#     form_class = MaterialForm
 
-#     def get_object(self):
-#         return self.activation.process.ordermaterial
-
-#     def activation_done(self, form):
-#         ordermaterial = form.save()
-#         print(f'------------------------{ordermaterial}------------------------')
-#         self.activation.process.ordermaterial = ordermaterial
-#         super(OrderView, self).activation_done(form)
-        
-
-
-# class Order2View(FlowMixin, generic.UpdateView):
-#     form_class = Material2Form
-
-#     def get_object(self):
-#         return self.activation.process.ordermaterial
-
-#     def activation_done(self, form):
-#         ordermaterial = form.save()
-#         print(f'------------------------{ordermaterial}------------------------')
-#         self.activation.process.ordermaterial = ordermaterial
-#         super(Order2View, self).activation_done(form)
-        
-    
 class FixView(FlowMixin, generic.UpdateView):
     form_class = MaterialForm
 
