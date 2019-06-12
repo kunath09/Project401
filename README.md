@@ -25,4 +25,12 @@ INSTALLATION (VIEWFLOW)
 STRUCTURE (VIEWFLOW)
 ------------
  
- 1. install Python 3
+Project401/
+├── myproject
+│   ├── api
+│   ├── media
+│   ├── myapp
+│   ├── myproject
+│   ├── manage.py
+│   ├── requirements.txt
+└── README.md
