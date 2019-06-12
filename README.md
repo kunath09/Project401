@@ -13,14 +13,37 @@ Most of the requirements is already in requirements.txt file except:
 
 INSTALLATION (VIEWFLOW)
 ------------
+ * this sample command is for ubantu 
  
  1. install Python 3
+    sudo apt-get update
+    sudo apt-get install python3.6
+    
  2. install Pip3
+    sudo apt install python3-pip
+    
  3. install Virtualenv from Pip3
+    sudo pip3 install virtualenv 
+    
  4. creat new virtual environment in empty directory and activate virtual environment
+    python3 -m venv env
+    source env/bin/activate
+    
  5. copy source code to your directory
+ 
  6. use Pip3 to install requirements.txt file (include update pkg-resources and install viewflow pro version)
- 7. run server
+    pip3 install -r requirements.txt
+    
+ 7. run this command 
+    ./manage.py makemigrations
+ 8. run this command
+    ./manage.py migrate
+ 9. run this command 
+    ./manage.py createsuperuser
+ 10. run this command 
+    ./manage.py runserver
+    
+ 11. your applicatiion is now available
 
 STRUCTURE (VIEWFLOW)
 ------------
