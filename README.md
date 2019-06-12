@@ -21,3 +21,8 @@ INSTALLATION (VIEWFLOW)
  5. copy source code to your directory
  6. use Pip3 to install requirements.txt file (include update pkg-resources and install viewflow pro version)
  7. run server
+
+STRUCTURE (VIEWFLOW)
+------------
+ 
+ 1. install Python 3
