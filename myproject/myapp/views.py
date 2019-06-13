@@ -14,13 +14,13 @@ from .models import Profile,Material,Menu,BuyMaterialProcess,MaterialItem,Restau
 
 @login_required
 def home(request):
-    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/home.html')
+    return render(request, 'home.html')
 @login_required
 def menu(request):
-    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/2final.html',)
+    return render(request, '2final.html',)
 @login_required
 def summary(request):
-    return render(request, '/home/kunat/Desktop/Project401/myproject/myapp/templates/3final.html',)
+    return render(request, '3final.html',)
 
 @login_required
 def settings(request):
